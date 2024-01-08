@@ -29,6 +29,20 @@ jobs:
       with:
         gradle-version: '8.2'
 
+    - name: Install Node.js and NVM
+      run: |
+        brew install nvm
+        export NVM_DIR="$HOME/.nvm"
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+        nvm install 18
+
+    - name: Install MongoDB
+      run: |
+        brew tap mongodb/brew
+        brew install mongodb-community@5.0
+        brew services start mongodb-community@5.0
+        sleep 10  # Wait for MongoDB to start
+
     - name: Install NPM Dependencies (api)
       run: |
         cd api
@@ -44,8 +58,7 @@ jobs:
         cd api
         echo "Starting API with test environment"
         JWT_SECRET=f6d278bb34e1d0e146a80b16ec254c05 MONGODB_URL='mongodb://localhost/acebook_test' npm run start:test &
-        while ! curl -s http://localhost:your-api-port/health-check; do sleep 5; done
-
+        while ! curl -s http://localhost:3000/health-check; do sleep 5; done
 
     - name: Start Frontend
       run: |
