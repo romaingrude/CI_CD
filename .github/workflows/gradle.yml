@@ -43,9 +43,9 @@ jobs:
       run: |
         cd api
         echo "Starting API with test environment"
-        JWT_SECRET=f6d278bb34e1d0e146a80b16ec254c05 npm run start:test &
-        # Wait for API to be responsive
-        while ! curl -s http://localhost:3000/health-check; do sleep 5; done
+        JWT_SECRET=f6d278bb34e1d0e146a80b16ec254c05 MONGODB_URL='mongodb://localhost/acebook_test' npm run start:test &
+        while ! curl -s http://localhost:your-api-port/health-check; do sleep 5; done
+
 
     - name: Start Frontend
       run: |
