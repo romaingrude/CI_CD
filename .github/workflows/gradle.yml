@@ -31,16 +31,15 @@ jobs:
 
     - name: Install Node.js and NVM
       run: |
-        brew install nvm
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
         export NVM_DIR="$HOME/.nvm"
         [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
         nvm install 18
 
     - name: Install MongoDB
       run: |
-        brew tap mongodb/brew
-        brew install mongodb-community@5.0
-        brew services start mongodb-community@5.0
+        sudo apt-get install -y mongodb
+        sudo systemctl start mongodb
         sleep 10  # Wait for MongoDB to start
 
     - name: Install NPM Dependencies (api)
