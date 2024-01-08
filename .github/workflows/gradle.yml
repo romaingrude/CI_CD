@@ -38,8 +38,11 @@ jobs:
 
     - name: Install MongoDB
       run: |
-        sudo apt-get install -y mongodb
-        sudo systemctl start mongodb
+        wget -qO - https://www.mongodb.org/static/pgp/server-5.0.asc | sudo gpg --dearmor -o /usr/share/keyrings/mongodb-archive-keyring.gpg
+        echo "deb [signed-by=/usr/share/keyrings/mongodb-archive-keyring.gpg] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/5.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-5.0.list
+        sudo apt-get update
+        sudo apt-get install -y mongodb-org
+        sudo systemctl start mongod
         sleep 10  # Wait for MongoDB to start
 
     - name: Install NPM Dependencies (api)
